@@ -23,6 +23,8 @@ https://www.youtube.com/@CodingWithJohn - John short videos
 
 https://mylearn.oracle.com/ou/story/40805 - Oracle JAVA SE courses
 
+
+
 ## Learn TS
 https://www.typescriptlang.org/docs/handbook/intro.html - TS Handbook
 
