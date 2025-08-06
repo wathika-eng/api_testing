@@ -54,3 +54,12 @@ https://www.apisecuniversity.com/#courses - API Security
 https://portswigger.net/web-security/learning-paths 
 
 https://thexssrat.podia.com/view/courses/capie-lesson-material-no-cert/3098177-chapter-1-what-is-an-api/10077057-capie-chapter-1-1-what-is-an-api-pt1-mp4
+
+```bash
+# video compression
+ffmpeg -i input.mp4 -vcodec libx264 -crf 28 -acodec aac -b:a 128k output.mp4
+
+# make a bootable USB, ensure sdX is the 
+sudo dd if=/path/to/image.iso of=/dev/sdX bs=4M status=progress oflag=sync
+
+```
