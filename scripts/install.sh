@@ -26,11 +26,11 @@ else
 fi
 
 # check if python, pip and pipx are already installed
-if command -v python3 &> /dev/null && command -v pip3 &> /dev/null && command -v pipx &> /dev/null; then
+if command -v python3 &> /dev/null && command -v pip3 &> /dev/null && command -v pipx &> /dev/null && command -v virtualenv &> /dev/null; then
     echo -e "${YELLOW}Python3, pip3 and pipx are already installed. Skipping installation.${NC}"
 else
     echo -e "${GREEN}Installing Python 3 and pip, pipx${NC}"
-    sudo apt-get install -y python3 python3-pip
+    sudo apt-get install -y python3 python3-pip python3-virtualenv
     sudo apt install pipx
     pipx ensurepath
     sudo pipx ensurepath
@@ -95,12 +95,17 @@ fi
 # start installing api security tools
 echo -e "${GREEN}Installing API security tools...${NC}"
 
-echo -e "${GREEN}Installing Arjun...${NC}"
-pipx install arjun
-# check if Arjun is installed
-if ! command -v arjun &> /dev/null; then
-    echo -e "${RED}Arjun installation failed.${NC}"
-    exit 1
+# check and install arjun and mitmproxy
+if command -v arjun &> /dev/null && command -v mitmproxy &> /dev/null; then
+    echo -e "${YELLOW}Arjun and mitmproxy are already installed. Skipping installation.${NC}"
+else
+    echo -e "${GREEN}Installing Arjun and mitmproxy...${NC}"
+    pipx install arjun
+    pipx install mitmproxy
+    if ! command -v arjun &> /dev/null || ! command -v mitmproxy &> /dev/null; then
+        echo -e "${RED}Arjun or mitmproxy installation failed.${NC}"
+        exit 1
+    fi
 fi
 
 # install Gobuster
@@ -113,38 +118,38 @@ if ! command -v gobuster &> /dev/null; then
 fi
 
 # install Nuclei
-echo -e "${GREEN}Installing Nuclei...${NC}"
-go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
-# check if Nuclei is installed
-if ! command -v nuclei &> /dev/null; then
-    echo -e "${RED}Nuclei installation failed.${NC}"
-    exit 1
-fi
+# echo -e "${GREEN}Installing Nuclei...${NC}"
+# go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+# # check if Nuclei is installed
+# if ! command -v nuclei &> /dev/null; then
+#     echo -e "${RED}Nuclei installation failed.${NC}"
+#     exit 1
+# fi
 
 # install HTTPX
-echo -e "${GREEN}Installing HTTPX...${NC}"
-go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-# check if HTTPX is installed
-if ! command -v httpx &> /dev/null; then
-    echo -e "${RED}HTTPX installation failed.${NC}"
-    exit 1
-fi
+# echo -e "${GREEN}Installing HTTPX...${NC}"
+# go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+# # check if HTTPX is installed
+# if ! command -v httpx &> /dev/null; then
+#     echo -e "${RED}HTTPX installation failed.${NC}"
+#     exit 1
+# fi
 
 # install kiterunner
 # check if kiterunner is already installed
-if command -v kiterunner &> /dev/null; then
-    echo -e "${YELLOW}Kiterunner is already installed. Skipping installation.${NC}"
-else
-    echo -e "${GREEN}Installing Kiterunner...${NC}"
-    curl -L -o kiterunner.tar.gz https://github.com/assetnote/kiterunner/releases/download/v1.0.2/kiterunner_1.0.2_linux_amd64.tar.gz
-    tar -xzf kiterunner.tar.gz
-    sudo mv kiterunner /usr/local/bin/
-    # check if Kiterunner is installed
-    if ! command -v kiterunner &> /dev/null; then
-        echo -e "${RED}Kiterunner installation failed.${NC}"
-        exit 1
-    fi
-fi
+# if command -v kiterunner &> /dev/null; then
+#     echo -e "${YELLOW}Kiterunner is already installed. Skipping installation.${NC}"
+# else
+#     echo -e "${GREEN}Installing Kiterunner...${NC}"
+#     curl -L -o kiterunner.tar.gz https://github.com/assetnote/kiterunner/releases/download/v1.0.2/kiterunner_1.0.2_linux_amd64.tar.gz
+#     tar -xzf kiterunner.tar.gz
+#     sudo mv kiterunner /usr/local/bin/
+#     # check if Kiterunner is installed
+#     if ! command -v kiterunner &> /dev/null; then
+#         echo -e "${RED}Kiterunner installation failed.${NC}"
+#         exit 1
+#     fi
+# fi
 
 source snap_tools.sh
 
